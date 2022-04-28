@@ -102,7 +102,7 @@ public class AppService {
 		driverMap.getDriverMap().get(currentLocation).add(driver);
 		
 		addMap(currentLocation,driver);
-     }
+        }
 	public void change_driver_status(String driverName, Boolean bool)
 	{
 		for(Driver driver: driverRepository.getDriverList()) {
@@ -138,91 +138,91 @@ public class AppService {
 			System.out.println(driverRepository.getDriverList());
 			}
 	
-		public HashSet<Driver> find_ride(String userName, int x, int y, int s, int t) {
-			Point currentLocation= new Point(x,y);
-			Point destination= new Point(s,t);
-			update_userLocation(userName, x,  y);
-			for (User user:userRepository.getUserList() )
-			{
-				if (user.getName().equals(userName)) {
-					
-					user.setCurrentRide(new Ride(new Driver(), user,currentLocation, destination,1 ));
-				}
-			}
-			//System.out.println(driverMap.getDriverMap().get(currentLocation));
-			HashSet<Driver> driverList= new HashSet<Driver> ();
-			for (Driver driver: driverMap.getDriverMap().getOrDefault(currentLocation, new HashSet<Driver> () ))
-			{
-				if (driver.isAvailable())driverList.add(driver);
-			}
-			
-			if (driverList.size()==0)System.out.println("No Ride Found");
-			else System.out.println(driverList);
-			return driverList;
-		}
-		
-		public void choose_ride(String userName, String driverName) {
-			
-			Ride ride = null; 
-		
-			for (User user:userRepository.getUserList() )
-			{
-				if (user.getName().equals(userName)) {
-					
-					ride=user.getCurrentRide();
-				}
-			}
-			
-			Point currentLocation=ride.getSource();
-			for (Driver driver: driverMap.getDriverMap().get(currentLocation))
-			{
-				if (driver.getDriverName().equals(driverName)) {
-					
-					ride.setDriver(driver);
-				
-					System.out.println("Ride Started");
-				}
-				
-			}
-		
-			
-			
-		}
-		
-		public void calculateBill(String userName)
+	public HashSet<Driver> find_ride(String userName, int x, int y, int s, int t) {
+		Point currentLocation= new Point(x,y);
+		Point destination= new Point(s,t);
+		update_userLocation(userName, x,  y);
+		for (User user:userRepository.getUserList() )
 		{
-			Ride ride = null; 
-			
-			for (User user:userRepository.getUserList() )
-			{
-				if (user.getName().equals(userName)) {
-					
-					ride=user.getCurrentRide();
-				}
+			if (user.getName().equals(userName)) {
+
+				user.setCurrentRide(new Ride(new Driver(), user,currentLocation, destination,1 ));
 			}
-			
-			Driver driver=ride.getDriver();
-			double bill= ride.getBill();
-			Point destination=ride.getDestination();
-			
-			driver.setDriverEarning(driver.getDriverEarning()+bill);
-			update_driverlocation(driver.getDriverName(),destination.x,destination.y);
-			update_userLocation(userName,destination.x,destination.y);
-			
-			System.out.println("Ride Ended Bill Amount: "+bill);
-			
-			
 		}
-		
-		public void find_total_earning()
+		//System.out.println(driverMap.getDriverMap().get(currentLocation));
+		HashSet<Driver> driverList= new HashSet<Driver> ();
+		for (Driver driver: driverMap.getDriverMap().getOrDefault(currentLocation, new HashSet<Driver> () ))
 		{
-			for(Driver driver: driverRepository.getDriverList()) {
-				
-				System.out.println(driver.getDriverName()+"\t earn \t"+ driver.getDriverEarning());
-				
-			}
-			
+			if (driver.isAvailable())driverList.add(driver);
 		}
+
+		if (driverList.size()==0)System.out.println("No Ride Found");
+		else System.out.println(driverList);
+		return driverList;
+	}
+
+	public void choose_ride(String userName, String driverName) {
+
+		Ride ride = null; 
+
+		for (User user:userRepository.getUserList() )
+		{
+			if (user.getName().equals(userName)) {
+
+				ride=user.getCurrentRide();
+			}
+		}
+
+		Point currentLocation=ride.getSource();
+		for (Driver driver: driverMap.getDriverMap().get(currentLocation))
+		{
+			if (driver.getDriverName().equals(driverName)) {
+
+				ride.setDriver(driver);
+
+				System.out.println("Ride Started");
+			}
+
+		}
+
+
+
+	}
 		
+	public void calculateBill(String userName)
+	{
+		Ride ride = null; 
+
+		for (User user:userRepository.getUserList() )
+		{
+			if (user.getName().equals(userName)) {
+
+				ride=user.getCurrentRide();
+			}
+		}
+
+		Driver driver=ride.getDriver();
+		double bill= ride.getBill();
+		Point destination=ride.getDestination();
+
+		driver.setDriverEarning(driver.getDriverEarning()+bill);
+		update_driverlocation(driver.getDriverName(),destination.x,destination.y);
+		update_userLocation(userName,destination.x,destination.y);
+
+		System.out.println("Ride Ended Bill Amount: "+bill);
+
+
+	}
+
+	public void find_total_earning()
+	{
+		for(Driver driver: driverRepository.getDriverList()) {
+
+			System.out.println(driver.getDriverName()+"\t earn \t"+ driver.getDriverEarning());
+
+		}
+
+	}
+
 		
 }
